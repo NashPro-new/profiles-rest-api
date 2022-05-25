@@ -12,17 +12,17 @@ class UserProfileManager(BaseUserManager):
         if not email:
             raise ValueError('User must have an email address')
 
-        email = self.normalise_email(email)
-        user = self.model(email = email, name=name)  # will create new model for the admin
+        email = self.normalize_email(email)
+        user = self.model(email= email, name=name,)  # will create new model for the admin
 
         user.set_password(password) #so the set password function is encrypted and showed as a hash
         user.save(using = self._db) #standard procedure to save objects in django
 
         return user
 
-    def create_superuser(self,email,name,password): #password not none bec superuser needs a password
+    def create_superuser(self, email, name, password): #password not none bec superuser needs a password
         """Create and save a new super user with given details"""
-        user = self.create_user(email,name,password)
+        user = self.create_user(email, name, password)
 
         user.is_superuser = True
         user.is_staff = True     ## is staff and is user automatically created by PermisssionsMixin
@@ -41,7 +41,7 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
     objects = UserProfileManager() #havent created this yet
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS_LIST =['name']
+    REQUIRED_FIELDS =['name',]
 
 
     def get_full_name(self):
@@ -52,5 +52,5 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
         """Retrieve short name of the user"""
         return self.name   #dont have short name field right now so same
     def __str__(self): #recommended for all django mdels to return string represetnation of our user
-       """Return string representation of our user"""
-       return self.email  #will show users by email addresses
+        """Return string representation of our user"""
+        return self.email  #will show users by email addresses
